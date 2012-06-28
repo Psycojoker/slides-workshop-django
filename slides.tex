@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage{verbatim}
+\usepackage{ulem}
 \usepackage{fancyvrb}
 \usepackage{color}
 \usepackage{tikz}
@@ -98,6 +99,7 @@
 %\usetheme{default}
 \begin{document}
 \title{Workshop django}
+\author{Laurent Peuch}
 
 \maketitle{}
 
@@ -134,8 +136,8 @@
         \item Installation
         \item Hello world
         \item MTV basique
-        \item Avancé ?
-        \item Jquery ?
+        \item Avancé
+        \item \sout{Jquery}
     \end{itemize}
 \end{frame}
 
@@ -901,6 +903,24 @@ Django apps
     \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{}
+\begin{center}
+    \includegraphics[scale=.18]{django.png}
+\end{center}
+\end{frame}
+
+\begin{tikzpicture}[scale=.9, transform shape]
+\tikzstyle{every node} = [fill=gray!30]
+\node (a) at (0, 0) {GET};
+\node (k) at (2, 0) {urls.py};
+\node (b) at (4, 0) {app/urls.py};
+\node (c) at (8, 0) {app/views.py (V)};
+\node (f) at (8, -3) {app/models.py (M)};
+\node (d) at (11, 0) {réponse};
+\foreach \from/\to in {a/k, k/b, b/c, c/d, e/c, f/c}
+\draw [->] (\from) -- (\to);
+\end{tikzpicture}
+
 \begin{frame}[fragile]{Excercie}
     Migrer dans une django app.
 \end{frame}
@@ -1040,26 +1060,148 @@ Remarque: préféré l'héritage pour les choses tels que les headers et les foo
 \end{footnotesize}
 \end{frame}
 
-% models
-%*liste des champs classique, pointer sur la doc de django
-% les set automatiquement créé
-%*.update
-% __unicode__
+\begin{frame}[fragile]{Champs des modèles classique}
+    Il y a normalement tout ce qu'on peut trouver dans une bdd SQL classique et d'autres
+    \begin{itemize}
+        \item CharField
+        \item TextField
+        \item BooleanField
+        \item DateField et DateTimeField
+        \item EmailField
+        \item URLField
+        \item ForeignKeyField
+        \item ManyToManyField(..., through="...")
+        \item OneToOne
+    \end{itemize}
+Et les options classique: null=True, blank=True, max\_lenght=255
+\end{frame}
 
-%*get_object_or_404
+\begin{frame}[fragile]{\_\_unicode\_\_ pour un modèle}
+    C'est intéressant de surcharger cette méthode car c'est elle qui sera appelé par défaut dans un template (et ça rend la lecture dans un shell plus facile):
 
-%*forms
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Class} \PY{n}{Post}\PY{p}{(}\PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{)}\PY{p}{:}
+    \PY{o}{.}\PY{o}{.}\PY{o}{.}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}unicode\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{title}
+\end{Verbatim}
 
-%*Parler de ce dont j'ai pas parlé
-%*les middlesware
-%*templateloarders
-%*templatestags
-%*commandes perso
-%*generic views ?
-%*request.user
-%*login_required
-%*i18n
-%*fixtures
+\begin{verbatim}
+{{ post }} <- affiche le titre du poste
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Les reverses des modèles}
+    Si vous faites des relations entre modèles avec des foreigns key, django créer automatiquement des méthodes pour vous aider.
+
+\vspace{3mm}
+\pause
+    Par exemple si vous avez un modèle Post et un modèle Comment qui a une foreign key vert Post, vous pouvez faire:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{post} \PY{o}{=} \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n+nb}{id}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{post}\PY{o}{.}\PY{n}{comment\PYZus{}set}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    $model\_set$ est un manager comme $objects$ et vous pouvez faire tout ce que vous pouvez faire avec objects dessus.
+\end{frame}
+
+\begin{frame}[fragile]{get\_object\_or\_404}
+    Un shortcut sympa:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{django.shortcuts} \PY{k+kn}{import} \PY{n}{get\PYZus{}object\PYZus{}or\PYZus{}404}
+
+    \PY{k}{def} \PY{n+nf}{vue}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
+        \PY{n}{post} \PY{o}{=} \PY{n}{get\PYZus{}object\PYZus{}or\PYZus{}404}\PY{p}{(}\PY{n}{Post}\PY{p}{,} \PY{n+nb}{id}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+\pause
+Remplace:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{django.http} \PY{k+kn}{import} \PY{n}{Http404}
+
+    \PY{k}{def} \PY{n+nf}{my\PYZus{}view}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
+        \PY{k}{try}\PY{p}{:}
+            \PY{n}{post} \PY{o}{=} \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{pk}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{k}{except} \PY{n}{Post}\PY{o}{.}\PY{n}{DoesNotExist}\PY{p}{:}
+            \PY{k}{raise} \PY{n}{Http404}
+\end{Verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Les génériques views}
+    Très pratique mais un peu difficile à comprendre, y en a pour plusieurs types de choses:
+    \begin{itemize}
+        \item afficher le résultat d'un select
+        \item afficher un objet
+        \item créer u n nouvel objet
+        \item updater un objet
+        \item supprimer un objet
+        \item afficher un template et afficher par rapport à un type de date
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Les génériques views}
+Ex: pour du listing et le detail (nom des templates \begin{bf}important\end{bf}):
+\begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{django.views.generic} \PY{k+kn}{import} \PY{n}{ListModel}
+
+\PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{ListModel}\PY{o}{.}\PY{n}{as\PYZus{}view}\PY{p}{(}\PY{n}{model}\PY{o}{=}\PY{n}{Post}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}post/(?P\PYZlt{}pk\PYZgt{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{d+)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{DetailModel}\PY{o}{.}\PY{n}{as\PYZus{}view}\PY{p}{(}\PY{n}{model}\PY{o}{=}\PY{n}{Post}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+    \PY{p}{)}
+
+\PY{c}{\PYZsh{} est l'equivalent de}
+
+\PY{k}{def} \PY{n+nf}{list\PYZus{}posts}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{render}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{l+s}{"}\PY{l+s}{blog/post\PYZus{}list.html}\PY{l+s}{"}\PY{p}{,}
+                  \PY{p}{\PYZob{}}\PY{l+s}{"}\PY{l+s}{object\PYZus{}list}\PY{l+s}{"}\PY{p}{:} \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{post\PYZus{}detail}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{n}{pk}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{render}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{l+s}{"}\PY{l+s}{blog/post\PYZus{}detail.html}\PY{l+s}{"}\PY{p}{,}
+                  \PY{p}{\PYZob{}}\PY{l+s}{"}\PY{l+s}{object}\PY{l+s}{"}\PY{p}{:} \PY{n}{get\PYZus{}object\PYZus{}or\PYZus{}404}\PY{p}{(}\PY{n}{Post}\PY{p}{,} \PY{n}{pk}\PY{o}{=}\PY{n}{pk}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{list\PYZus{}posts}\PY{p}{)}\PY{p}{,}
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}post/(?P\PYZlt{}pk\PYZgt{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{d+)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{post\PYZus{}detail}\PY{p}{)}\PY{p}{,}
+    \PY{p}{)}
+\end{Verbatim}
+\end{footnotesize}
+\end{frame}
+
+\begin{frame}[fragile]{Ce dont j'ai pas parlé}
+    \begin{itemize}
+        \item les fichiers statiques
+        \item forms
+        \item middleware
+        \item templatestags customs et filters custom
+        \item rss/atom
+        \item commandes perso
+        \item gestion des utilisateurs (login\_required)
+        \item messages
+        \item i18n
+        \item fixtures
+        \item trucs avancés dans les modèles (et les contexts managers (with))
+        \item django-nonrel
+        \item les trucs à savoir quand on passe en prod
+        \item django-south
+        \item le caching
+        \item les django-apps cool
+        \item et tout le reste
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+Faim. Questions ?
+\end{center}
+\end{LARGE}
+\end{frame}
 
 %*jquery
 %*introduction
