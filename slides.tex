@@ -699,7 +699,7 @@ Remarque: le $.save()$ est \begin{bf}obligatoire\end{bf} pour sauver l'objet dan
     \item Afficher la liste des modèles sur la racinte (\begin{bf}sans\end{bf} templates dans un premier temps si c'est plus facile)
     \item Une fois que ça marche, rajouter un template pour la racine et l'utiliser.
     \item Utiliser un fichier $views.py$ pour les vues (les fonctions appelées par $urls.py$)
-    \item Faire pareil pour n'afficher qu'un seul poste en attrapant l'id du poste dans l'url.
+    \item Faire pareil pour n'afficher qu'un seul poste en attrapant l'id du poste dans l'url. (Utiliser la regex $([0-9]+)$)
 \end{itemize}
 \end{frame}
 
@@ -829,33 +829,216 @@ Django apps
 
 \begin{frame}[fragile]{Approche naïve}
     On peut faire quelque chose comme ça:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
+
+    \PY{k+kn}{from} \PY{n+nn}{blog.views} \PY{k+kn}{import} \PY{n}{hello}\PY{p}{,} \PY{n}{with\PYZus{}arg}
+
+    \PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{hello}\PY{p}{)}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(.*)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{with\PYZus{}arg}\PY{p}{)}\PY{p}{,}
+        ...
+    \PY{p}{)}
+\end{Verbatim}
+
 \end{frame}
 
-%*Apps
-%*bouger tout ce qu'on a fait dedans
-%*attention à la db ! (les modèles changent) + !! settings.py installed apps
-%*comme gérer dans urls.py
-% remarque pour les templates
-%*import vs strings vs include
+\begin{frame}[fragile]{Approche naïve}
+    Ou comme ça:
 
-%*Avancé
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
 
-%*Interface admin
-%*ça existe
-%*comment rajouter un modèle
-%*vais pas trop en parler, y a plein de trucs cool à faire mais pas le sujet
+    \PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{l+s}{'}\PY{l+s}{blog.views.hello}\PY{l+s}{'}\PY{p}{)}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(.*)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{l+s}{'}\PY{l+s}{blog.views.with\PYZus{}arg}\PY{l+s}{'}\PY{p}{)}\PY{p}{,}
+        ...
+    \PY{p}{)}
+\end{Verbatim}
+\end{frame}
 
-% urls
-% utiliser des stings
-% choper des arguments només
-% POST && GET
-% nomer ses urls + prefix apps
+\begin{frame}[fragile]{Approche naïve}
+    Ou encore comme ça (mieux):
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
 
-% templates
-%*héritage templates
-% include
-%*filtres
-%*{% url %}
+    \PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{blog.views}\PY{l+s}{'}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{l+s}{'}\PY{l+s}{hello}\PY{l+s}{'}\PY{p}{)}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(.*)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{l+s}{'}\PY{l+s}{with\PYZus{}arg}\PY{l+s}{'}\PY{p}{)}\PY{p}{,}
+        ...
+    \PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Approche naïve}
+    Mais le mieux c'est de prendre le dernier fichier, de virer ce qui est lié à l'admin, de le mettre dans $blog/urls.py$ et de faire:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
+
+    \PY{k+kn}{import} \PY{n}{blog}
+
+    \PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{n}{blog}\PY{o}{.}\PY{n}{urls}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}admin/}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{n}{admin}\PY{o}{.}\PY{n}{site}\PY{o}{.}\PY{n}{urls}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+    \PY{p}{)}
+\end{Verbatim}
+
+\pause
+    Remarque: \begin{bf}attention\end{bf} pas de "\$" à la fin de la regex !
+
+\pause
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{blog.urls}\PY{l+s}{'}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{c}{\PYZsh{} marche aussi}
+\end{Verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Remarques}
+    \begin{itemize}
+        \item Vous pouvez créer un répertoire $templates$ dans l'app et vous n'aurez pas à le déclarer dans le $settings.py$
+        \item Pareil pour un répertoire $static$ (pour les fichiers static)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Excercie}
+    Migrer dans une django app.
+\end{frame}
+
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+Avancé
+\end{center}
+\end{LARGE}
+\end{frame}
+
+\begin{frame}[fragile]{Arguments nomées dans les urls}
+
+    Donner un nom aux arguments dans les urls:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}post/(?P\PYZlt{}post\PYZus{}id\PYZgt{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{d+)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{l+s}{'}\PY{l+s}{show\PYZus{}post}\PY{l+s}{'}\PY{p}{)}
+\end{Verbatim}
+
+    Utile pour les génériques views.
+\end{frame}
+
+\begin{frame}[fragile]{POST et GET dans les requests}
+    Les arguments POST et GET sont mit dans des dictionnaires sur l'objet request:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k}{def} \PY{n+nf}{vue}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
+        \PY{n}{request}\PY{o}{.}\PY{n}{POST}\PY{p}{[}\PY{l+s}{"}\PY{l+s}{clef}\PY{l+s}{"}\PY{p}{]}
+        \PY{n}{request}\PY{o}{.}\PY{n}{GET}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s}{"}\PY{l+s}{clef}\PY{l+s}{"}\PY{p}{)}
+\end{Verbatim}
+
+Il est préférable d'utiliser .get pour éviter une exception
+\end{frame}
+
+\begin{frame}[fragile]{Nomer ses urls}
+Cela permet de faire des reverses pour avoir des urls relatives.
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(?P\PYZlt{}post\PYZus{}id\PYZgt{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{d+)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{l+s}{'}\PY{l+s}{show\PYZus{}post}\PY{l+s}{'}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{post}\PY{l+s}{"}\PY{p}{)}
+\end{Verbatim}
+
+Dans les templates:
+\begin{verbatim}
+    {% url post post.id %}
+\end{verbatim}
+
+Dans une vue:
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{django.core.urlresolvers} \PY{k+kn}{import} \PY{n}{reverse}
+
+\PY{k}{def} \PY{n+nf}{vue}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
+    \PY{o}{.}\PY{o}{.}\PY{o}{.}
+    \PY{n}{reverse}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{post}\PY{l+s}{'}\PY{p}{,} \PY{n}{args}\PY{o}{=}\PY{p}{[}\PY{n}{post}\PY{o}{.}\PY{n}{id}\PY{p}{]}\PY{p}{)}
+    \PY{o}{.}\PY{o}{.}\PY{o}{.}
+\end{Verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Avec un préfixe}
+Pour éviter les conflits de nom entre apps:
+\begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}blog/}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{blog.urls}\PY{l+s}{'}\PY{p}{,} \PY{n}{namespace}\PY{o}{=}\PY{l+s}{'}\PY{l+s}{blog}\PY{l+s}{'}\PY{p}{,} \PY{n}{app\PYZus{}name}\PY{o}{=}\PY{l+s}{'}\PY{l+s}{blog}\PY{l+s}{'}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+\end{Verbatim}
+\end{footnotesize}
+
+Ce qui donne:
+    \begin{verbatim}
+    {% url blog:post post.id %}
+    \end{verbatim}
+
+Et pareil pour reverse:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{reverse}\PY{p}{(}\PY{l+s}{"}\PY{l+s}{blog:post}\PY{l+s}{"}\PY{p}{,} \PY{n}{args}\PY{o}{=}\PY{p}{[}\PY{n}{post}\PY{o}{.}\PY{n}{id}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Template, filtres}
+    Il existe toute une série de filtres applicables à une variable comme ça (marche aussi sur les variables dans les templatetags):
+\begin{verbatim}
+    {{ variable|filtre }}
+\end{verbatim}
+
+    Ils peuvent se chainer:
+\begin{verbatim}
+    {{ variable|filtre1:"argument"|filtre2:"autre argument"|filtre3 }}
+\end{verbatim}
+
+On y retrouve la plupart des opérations classiques sur les strings (cut, strip, slugify, lower, capitalize ...) et d'autres trucs plus spéciaux (slice par exemple).
+\end{frame}
+
+\begin{frame}[fragile]{Template, include}
+    Le templatetag $include$ permet d'inclure un template dans un autre de la façon suivante:
+
+    \begin{verbatim}
+    {% include "autre-template.html" %}
+    \end{verbatim}
+
+Remarque: préféré l'héritage pour les choses tels que les headers et les footers.
+\end{frame}
+
+\begin{frame}[fragile]{L'héritage de templates}
+    Beaucoup plus intéressant que l'include:
+
+    \vspace{3mm}$base.html$
+\begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nt}{\PYZlt{}html}\PY{n+nt}{\PYZgt{}}
+        \PY{n+nt}{\PYZlt{}head}\PY{n+nt}{\PYZgt{}}
+            ...
+            \PYZob{}\PYZpc{} block head \PYZpc{}\PYZcb{}\PYZob{}\PYZpc{} endblock \PYZpc{}\PYZcb{}
+        \PY{n+nt}{\PYZlt{}/head\PYZgt{}}
+        \PY{n+nt}{\PYZlt{}body}\PY{n+nt}{\PYZgt{}}
+            \PY{n+nt}{\PYZlt{}div} \PY{n+na}{id=}\PY{l+s}{"supermenu"}\PY{n+nt}{\PYZgt{}}
+                ...
+            \PY{n+nt}{\PYZlt{}/div\PYZgt{}}
+            \PY{n+nt}{\PYZlt{}div} \PY{n+na}{class=}\PY{l+s}{"content"}\PY{n+nt}{\PYZgt{}}
+            \PYZob{}\PYZpc{} block content \PYZpc{}\PYZcb{}
+            \PYZob{}\PYZpc{} endblock \PYZpc{}\PYZcb{}
+            \PY{n+nt}{\PYZlt{}/div\PYZgt{}}
+        \PY{n+nt}{\PYZlt{}/body\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}/html\PYZgt{}}
+\end{Verbatim}
+\end{footnotesize}
+\end{frame}
+
+\begin{frame}[fragile]{L'héritage de templates}
+    $example.html$
+\begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYZob{}\PYZpc{} extends "base.html" \PYZpc{}\PYZcb{}
+
+    \PYZob{}\PYZpc{} block content \PYZpc{}\PYZcb{}
+    \PY{n+nt}{\PYZlt{}p}\PY{n+nt}{\PYZgt{}}Super content\PY{n+nt}{\PYZlt{}/p\PYZgt{}}
+    \PYZob{}\PYZpc{} endblock \PYZpc{}\PYZcb{}
+\end{Verbatim}
+\end{footnotesize}
+\end{frame}
 
 % models
 %*liste des champs classique, pointer sur la doc de django
