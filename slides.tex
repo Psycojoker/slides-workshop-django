@@ -103,6 +103,16 @@
 
 \maketitle{}
 
+\begin{frame}{Objectif}
+\begin{itemize}
+    \item vous apprendre la base de django et la structure classique d'un projet django
+    \item vous donner une vision d'ensemble de ce qui est possible/disponible
+    \item pour pouvoir continuer à apprendre la suite par vous même
+    \item que ces slides puissent être un support pour vous
+    \item plus ou moins vous donner ce qu'il faut pour bosser sur la partie django de p402
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Requirements}
 \begin{itemize}
     \item savoir coder
@@ -688,7 +698,7 @@ Remarque: le $.save()$ est \begin{bf}obligatoire\end{bf} pour sauver l'objet dan
 \end{Verbatim}
 \end{frame}
 
-\begin{frame}[fragile]{Excercice}
+\begin{frame}[fragile]{Exercice}
     Objectif: créer un mini blog: que sur la racine ($/$) s'affiche la liste de postes et sur $/<post\_id>/$ s'affiche un poste.
 
 \pause
@@ -769,7 +779,7 @@ $settings.py$
 \end{Verbatim}
 \end{frame}
 
-\begin{frame}[fragile]{Excercice}
+\begin{frame}[fragile]{Exercice}
     \begin{itemize}
         \item Activer l'interface admin.
         \item Se logger et se balader un peu.
@@ -906,6 +916,8 @@ Django apps
 \begin{frame}[fragile]{}
 \begin{center}
     \includegraphics[scale=.18]{django.png}
+
+    \footnotesize Source: http://sametmax.com/schema-de-fonctionnement-general-de-django/
 \end{center}
 \end{frame}
 
@@ -915,13 +927,14 @@ Django apps
 \node (k) at (2, 0) {urls.py};
 \node (b) at (4, 0) {app/urls.py};
 \node (c) at (8, 0) {app/views.py (V)};
+\node (e) at (8, 3) {templates (T)};
 \node (f) at (8, -3) {app/models.py (M)};
 \node (d) at (11, 0) {réponse};
 \foreach \from/\to in {a/k, k/b, b/c, c/d, e/c, f/c}
 \draw [->] (\from) -- (\to);
 \end{tikzpicture}
 
-\begin{frame}[fragile]{Excercie}
+\begin{frame}[fragile]{Exercice}
     Migrer dans une django app.
 \end{frame}
 
@@ -1196,16 +1209,204 @@ Ex: pour du listing et le detail (nom des templates \begin{bf}important\end{bf})
 \end{frame}
 
 \begin{frame}[fragile]{}
+\begin{center}
+    \includegraphics[scale=.18]{django.png}
+
+    \footnotesize Source: http://sametmax.com/schema-de-fonctionnement-general-de-django/
+\end{center}
+\end{frame}
+
+\begin{tikzpicture}[scale=.9, transform shape]
+    MTV classique:
+\tikzstyle{every node} = [fill=gray!30]
+\node (a) at (0, 0) {GET};
+\node (k) at (2, 0) {urls.py};
+\node (b) at (4, 0) {app/urls.py};
+\node (c) at (8, 0) {app/views.py (V)};
+\node (e) at (8, 3) {templates (T)};
+\node (f) at (8, -3) {app/models.py (M)};
+\node (d) at (11, 0) {réponse};
+\foreach \from/\to in {a/k, k/b, b/c, c/d, e/c, f/c}
+\draw [->] (\from) -- (\to);
+\end{tikzpicture}
+
+\begin{frame}[fragile]{}
 \begin{LARGE}
 \begin{center}
-Faim. Questions ?
+Jquery
+\end{center}
+\end{LARGE}
+\end{frame}
+
+\begin{frame}[fragile]{Présentation}
+    \begin{itemize}
+        \item javascript web pour les humains\pause
+        \item still javascript ...\pause
+        \item surtout intéressant pour rendre une page dynamique\pause
+        \item et faire de l'AJAX (en gros du POST/GET http sans recharger la page)\pause
+        \item firebug (ou le brole buildin de chrome) sera votre compagnon d'infortune\pause
+        \item utilisé par p402\pause
+        \item surtout vous montrer le principe\pause
+        \item pas oublier que c'est executé par le naviguateur de l'utilisateur qui peut le modifier (ou en empêcher son execution)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Playground}
+    Template avec lequel on va jouer:
+\begin{small}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+cp}{\PYZlt{}!doctype html\PYZgt{}}
+\PY{n+nt}{\PYZlt{}html}\PY{n+nt}{\PYZgt{}}
+  \PY{n+nt}{\PYZlt{}head}\PY{n+nt}{\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}meta} \PY{n+na}{charset=}\PY{l+s}{"utf-8"}\PY{n+nt}{\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}title}\PY{n+nt}{\PYZgt{}}Demo\PY{n+nt}{\PYZlt{}/title\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}style}\PY{n+nt}{\PYZgt{}}
+        \PY{n+nc}{.test} \PY{p}{\PYZob{}} \PY{k}{font-weight}\PY{o}{:} \PY{k}{bold}\PY{p}{;} \PY{p}{\PYZcb{}}
+    \PY{n+nt}{\PYZlt{}/style\PYZgt{}}
+  \PY{n+nt}{\PYZlt{}/head\PYZgt{}}
+  \PY{n+nt}{\PYZlt{}body}\PY{n+nt}{\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}script }\PY{n+na}{src=}\PY{l+s}{"jquery-1.7.2.min.js"}\PY{n+nt}{\PYZgt{}}\PY{n+nt}{\PYZlt{}/script\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}script}\PY{n+nt}{\PYZgt{}}
+       \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{n+nb}{document}\PY{p}{)}\PY{p}{.}\PY{n+nx}{ready}\PY{p}{(}\PY{k+kd}{function}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZob{}}
+            // on met le code jquery ici
+       \PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{;}
+   \PY{n+nt}{\PYZlt{}/script\PYZgt{}}
+  \PY{n+nt}{\PYZlt{}/body\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/html\PYZgt{}}
+\end{Verbatim}
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile]{Principe}
+    Les uses cases de base sont assez simple:
+    \begin{itemize}
+        \item selectionner un élément du DOM (l'arbre html) et le modifier
+        \item selectionner un élément du DOM et lui attacher un événement
+        \item faire une requète (POST/GET) et potentielement utiliser le coder de retour
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Selectionner}
+    C'est relativement simple:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"ici on met la query"}\PY{p}{)}
+\end{Verbatim}
+    Ça ressemble à du xpath simplifié:
+
+    \begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"p"}\PY{p}{)} \PY{c+c1}{// tous les elements \PYZlt{}p\PYZgt{}}
+\PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"p.nom\PYZus{}de\PYZus{}class"}\PY{p}{)} \PY{c+c1}{// tous les elements \PYZlt{}p class="nom\PYZus{}de\PYZus{}class"\PYZgt{}}
+\PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"p\PYZsh{}pouet"}\PY{p}{)} \PY{c+c1}{// tous les elements \PYZlt{}p id="pouet"\PYZgt{}}
+             \PY{c+c1}{// (normalement y en a qu'un seul sur du bon html)}
+\PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{".nom\PYZus{}de\PYZus{}class"}\PY{p}{)} \PY{c+c1}{// tous les elements ayant la class correspondante}
+\PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"\PYZsh{}pouet"}\PY{p}{)} \PY{c+c1}{// tous les elements avec cet id}
+\end{Verbatim}
+\end{footnotesize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemple}
+    Exemple idiot (à tester si ça vous amuse):
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"p"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{remove}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+    \PY{c+c1}{// va supprimer tous les \PYZlt{}p\PYZgt{} de votre page}
+\end{Verbatim}
+    Autre:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"p"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{text}\PY{p}{(}\PY{l+s+s2}{"Atchoum"}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Événements}
+    Exemple, dans l'html:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nt}{\PYZlt{}p}\PY{n+nt}{\PYZgt{}}\PY{n+nt}{\PYZlt{}a} \PY{n+na}{href=}\PY{l+s}{"\PYZsh{}"} \PY{n+na}{id=}\PY{l+s}{"hide"}\PY{n+nt}{\PYZgt{}}hide\PY{n+nt}{\PYZlt{}/a\PYZgt{}} -
+       \PY{n+nt}{\PYZlt{}a} \PY{n+na}{href=}\PY{l+s}{"\PYZsh{}"} \PY{n+na}{id=}\PY{l+s}{"show"}\PY{n+nt}{\PYZgt{}}show\PY{n+nt}{\PYZlt{}/a\PYZgt{}}\PY{n+nt}{\PYZlt{}/p\PYZgt{}}
+
+    \PY{n+nt}{\PYZlt{}p} \PY{n+na}{id=}\PY{l+s}{"pouet"}\PY{n+nt}{\PYZgt{}}Foobarbaz\PY{n+nt}{\PYZlt{}/p\PYZgt{}}
+\end{Verbatim}
+    Dans la partie jquery:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"\PYZsh{}hide"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{click}\PY{p}{(}\PY{k+kd}{function}\PY{p}{(}\PY{n+nx}{event}\PY{p}{)} \PY{p}{\PYZob{}}
+        \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"\PYZsh{}pouet"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{hide}\PY{p}{(}\PY{l+s+s2}{"slow"}\PY{p}{)}\PY{p}{;}
+    \PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{;}
+    \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"\PYZsh{}show"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{click}\PY{p}{(}\PY{k+kd}{function}\PY{p}{(}\PY{n+nx}{event}\PY{p}{)} \PY{p}{\PYZob{}}
+        \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"\PYZsh{}pouet"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{show}\PY{p}{(}\PY{l+s+s2}{"slow"}\PY{p}{)}\PY{p}{;}
+    \PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+    Exemple réel: un menu déroulant.
+\end{frame}
+
+\begin{frame}[fragile]{AJAX: GET}
+    GET (remarque, l'ajax n'est permit que sur le domaine où s'excecute le code):
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nx}{\PYZdl{}}\PY{p}{.}\PY{n+nx}{get}\PY{p}{(}\PY{l+s+s2}{"/url/"}\PY{p}{,} \PY{k+kd}{function}\PY{p}{(}\PY{n+nx}{data}\PY{p}{)} \PY{p}{\PYZob{}}
+        \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"\PYZsh{}pouet"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{html}\PY{p}{(}\PY{n+nx}{data}\PY{p}{)}\PY{p}{;}
+    \PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+    Pratique pour le chargement asynchrone du contenu d'une page.
+\end{frame}
+
+\begin{frame}[fragile]{AJAX: POST}
+    POST similaire au GET:
+
+    \begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nx}{\PYZdl{}}\PY{p}{.}\PY{n+nx}{post}\PY{p}{(}\PY{l+s+s2}{"/url/"}\PY{p}{,} \PY{k+kd}{function}\PY{p}{(}\PY{n+nx}{data}\PY{p}{)} \PY{p}{\PYZob{}}
+        \PY{c+c1}{// ...}
+    \PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{footnotesize}
+
+    On peut lui donner des données (au GET aussi):
+
+    \begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nx}{\PYZdl{}}\PY{p}{.}\PY{n+nx}{post}\PY{p}{(}\PY{l+s+s2}{"/url/"}\PY{p}{,} \PY{p}{\PYZob{}}\PY{n+nx}{name}\PY{o}{:} \PY{l+s+s2}{"pouet"}\PY{p}{,} \PY{n+nx}{password}\PY{o}{:} \PY{l+s+s2}{"toto"}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{k+kd}{function}\PY{p}{(}\PY{n+nx}{data}\PY{p}{)} \PY{p}{\PYZob{}}
+        \PY{c+c1}{// ...}
+    \PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{footnotesize}
+
+    Ou le contenu d'une form (au GET aussi):
+    \begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n+nx}{\PYZdl{}}\PY{p}{.}\PY{n+nx}{post}\PY{p}{(}\PY{l+s+s2}{"/url/"}\PY{p}{,} \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"\PYZsh{}my\PYZus{}form"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{serialize}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{k+kd}{function}\PY{p}{(}\PY{n+nx}{data}\PY{p}{)} \PY{p}{\PYZob{}}
+        \PY{c+c1}{// ...}
+    \PY{p}{\PYZcb{}}\PY{p}{)}
+\end{Verbatim}
+\end{footnotesize}
+
+    Remarques: le callback est optionnel et il existe un \$.getJSON qui marche pareil.
+\end{frame}
+
+\begin{frame}[fragile]{Remarques}
+    Vous aurez pas besoin d'énormement plus, avec ça vous savez déjà fait énormement.
+
+    \vspace{3mm}
+    Je vous recommande vraiment d'apprendre à vous servir de firebug, de sa console et de la fenêtre qui permet de mettre des breakpoints.
+
+    \vspace{3mm}
+    L'unique commande à retenir pour la console:
+    \begin{verbatim}
+        console.dir(truc);
+    \end{verbatim}
+    Affiche les méthodes/attributs d'un objet.
+
+    \vspace{3mm}
+    Aussi intéressant de savoir que $console.log("foobar");$ affichera ça dans la console firebug.
+\end{frame}
+
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+Faim. Questions/Remarques ?
 \end{center}
 \end{LARGE}
 \end{frame}
 
 %*jquery
-%*introduction
-%*firebug
 %*$.document.ready vs $() vs autre brole
 %*selectors
 %*.hide
