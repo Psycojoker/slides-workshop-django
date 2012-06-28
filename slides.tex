@@ -1,0 +1,174 @@
+\documentclass{beamer}
+%\usepackage{unicode}
+%\usetheme{default}
+\begin{document}
+\title{Workshop django}
+
+\maketitle{}
+
+\begin{frame}{Requirements}
+\begin{itemize}
+    \item savoir coder
+    \item programmation orienté objet
+    \item python (la base)
+    \item sql (pas forcement poussé)
+    \item html (la base)
+    \item regexp (la base)
+    \item savoir utiliser un shell (la base)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Introduction}
+    C'est quoi django ?
+    \begin{itemize}
+        \item framework web en python\pause
+        \item full stacked (vs microframework comme flask, bottle et les 15 milles autres)\pause
+        \item vous "impose" un orm et un système de templates (changeable tous les 2 mais pas facilement)\pause
+        \item mais en échange vous avez les django app
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Installation}
+2 façons de faire
+\begin{itemize}
+    \item la classique avec le pkg manager de la distribution (eg: sudo apt-get install django)
+    \item en utilisant pypi via pip (on va utiliser celle là) dans un virtualenv
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Installation}
+    Faire:
+    \begin{itemize}
+        \item Installation de pip (sudo apt-get install python-pip)\pause
+        \item sudo pip install virtualenv (ou alors avec le package python-virtualenv)\pause
+        \item aller dans un nouveau répertoire (mkdir blog \&\& cd blog)\pause
+        \item virtualenv --no-site-packages --distribute ve\pause
+        \item source ve/bin/activate \# pour rentrer dans le venv\pause
+        \item pip install django\pause
+        \item deactivate \# on doit faire ça pour que le bin django-admin soit prit en compte
+        \item source ve\/bin\/activate
+    \end{itemize}
+    \vspace{3mm}
+    \pause
+    Si vous voulez sortir du venv:
+    \begin{itemize}
+        \item deactivate
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Mon premier projet django}
+    Faire dans le virtualenv:
+    \begin{itemize}
+        \item django-admin.py startproject <nom du projet>
+    \end{itemize}
+    \pause
+    Lancer le serveur de développement:
+    \begin{itemize}
+        \item cd <nom du projet> \&\& python manage.py runserver
+    \end{itemize}
+    Puis aller sur http://0.0.0.0:8000
+\end{frame}
+
+\begin{frame}
+    Vous allez obtenir une hiérarchie du style:
+%./project/urls.py
+%./project/settings.py
+%./project/__init__.py
+%./project/wsgi.py
+%./manage.py
+\end{frame}
+
+\begin{frame}
+    Remarque: vous allez aussi rencontrer des projets ayant la forme suivante (django <= 1.3)
+%./urls.py
+%./settings.py
+%./manage.py
+%./__init__.py
+\end{frame}
+
+%\begin{theorem}
+  %In a right triangle, the square of hypotenuse equals
+  %the sum of squares of two other sides.
+%\end{theorem}
+
+%*Urlresolver
+%*Hello World (HttpResponse)
+%*définir des urls simple
+%*choper des arguments
+%*choper des arguments només
+
+%*views.py
+%*utiliser un string dans urlresolver
+
+%*Templates
+%*settings.py
+%*template bidon
+%*comment appeler un template version moyen âge
+%*render (render_to_content)
+
+%*présentation du language de templates
+%*{{ }}
+%*filtres
+%*{% if %}
+%*{% for %}
+
+%*Modèles
+%*premier modèle
+%*syncdb + settings.py
+%*warning sur les modifs de db (évoquer south)
+%*liste des champs classique, pointer sur la doc de django
+%*shell
+%*créer un modèle, les 2 façons (.create, parler du .save)
+%*accèder à un/des modèle (.all, .filter, .get + chainage)
+%*modifier un modèle
+%*supprimer un/des modèles
+%*.update
+
+%*Interface admin
+%*ça existe
+%*comment rajouter un modèle
+%*vais pas trop en parler, y a plein de trucs cool à faire mais pas le sujet
+
+%*Apps
+%*principe, pourquoi c'est cool, organisation, réutilisabilité
+%*où en trouver ? github + google + http://www.djangopackages.com
+%*mater ça http://youtu.be/A-S0tqpPga4
+%*python manage.py startapp
+%*bouger tout ce qu'on a fait dedans
+%*attention à la db ! (les modèles changent) + !! settings.py installed apps
+%*comme gérer dans urls.py
+%*import vs strings vs include
+
+%*Avancé
+%*get_object_or_404
+%*{% url %}
+%*forms
+%*héritage templates
+
+%*Parler de ce dont j'ai pas parlé
+%*les middlesware
+%*templateloarders
+%*templatestags
+%*commandes perso
+%*generic views ?
+%*request.user
+%*login_required
+%*i18n
+%*fixtures
+
+%*jquery
+%*introduction
+%*firebug
+%*$.document.ready vs $() vs autre brole
+%*selectors
+%*.hide
+%*.show
+%*events (onclick)
+%*.html
+%*.append
+%*.data
+%*AJAX $.get $.post
+
+%Repomper ça http://sametmax.com/schema-de-fonctionnement-general-de-django/
+
+\end{document}
