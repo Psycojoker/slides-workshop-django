@@ -113,7 +113,12 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{}
+    \LARGE \begin{center}https://djangoproject.com\end{center}
+\end{frame}
+
 \begin{frame}{Introduction}
+    \vspace{3mm}
     C'est quoi django ?
     \begin{itemize}
         \item framework web en python\pause
@@ -132,6 +137,14 @@
         \item Avancé ?
         \item Jquery ?
     \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+Installation
+\end{center}
+\end{LARGE}
 \end{frame}
 
 \begin{frame}{Installation}
@@ -197,6 +210,14 @@
     \end{verbatim}
 \end{frame}
 
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+Hello World
+\end{center}
+\end{LARGE}
+\end{frame}
+
 \begin{frame}[fragile]{urls.py}
 \begin{footnotesize}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -252,6 +273,14 @@ Remarque: traditionnelement ces fonctions sont dans un fichier $views.py$
 \draw [->] (\from) -- (\to);
 \end{tikzpicture}
 
+\end{frame}
+
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+MTV
+\end{center}
+\end{LARGE}
 \end{frame}
 
 \begin{frame}[fragile]{MTV}
@@ -468,6 +497,9 @@ Exemple:
 \vspace{3mm}
 Remarque: ici c'est pour apprendre, en vrai ce fichier sera dans une app.
 
+\vspace{3mm}
+Autre remarque: si ce n'est pas spécifié django créera une clef primaire pour vous qui s'appelera $id$ (et elle a un alias $pk$).
+
 \end{frame}
 
 \begin{frame}[fragile]{Créer la base de données}
@@ -579,47 +611,239 @@ Et refaire un:
 \end{verbatim}
 \end{frame}
 
+\begin{frame}[fragile]{Créer un model}
+    Cela se fait de 2 façons. L'intuitive:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{project.models} \PY{k+kn}{import} \PY{n}{Post}
+
+    \PY{n}{post} \PY{o}{=} \PY{n}{Post}\PY{p}{(}\PY{n}{title}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{titre}\PY{l+s}{"}\PY{p}{,} \PY{n}{content}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{foobar}\PY{l+s}{"}\PY{p}{)}
+    \PY{n}{post}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\pause
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{c}{\PYZsh{} ou}
+    \PY{n}{post} \PY{o}{=} \PY{n}{Post}\PY{p}{(}\PY{p}{)}
+    \PY{n}{post}\PY{o}{.}\PY{n}{title} \PY{o}{=} \PY{l+s}{"}\PY{l+s}{titre}\PY{l+s}{"}
+    \PY{n}{post}\PY{o}{.}\PY{n}{content} \PY{o}{=} \PY{l+s}{"}\PY{l+s}{foobar}\PY{l+s}{"}
+    \PY{n}{post}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\pause
+Remarque: le $.save()$ est \begin{bf}obligatoire\end{bf} pour sauver l'objet dans la base de donnée. On l'oublie souvent, c'est pour ça qu'il y a une autre méthode qui n'en nécessite pas:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{create}\PY{p}{(}\PY{n}{title}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{titre}\PY{l+s}{"}\PY{p}{,} \PY{n}{content}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{foobar}\PY{l+s}{"}\PY{p}{)}
+\end{Verbatim}
+
+\end{frame}
+
 \begin{frame}[fragile]{Opérations classiques}
-    Tout va se 
+    Remarque: une grande partie des opérations va se faire via l'attribut $objetcts$. C'est appelé un manager.
+
+\vspace{3mm}
     Accèder à des modèles:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{p}{)}
+    \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{filter}\PY{p}{(}\PY{n}{title}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{pouet}\PY{l+s}{"}\PY{p}{)}
+    \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+\pause
+    Cela peut se chainer (les queries sont $lazy$):
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{filter}\PY{p}{(}\PY{n}{title}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{pouet}\PY{l+s}{"}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Opérations classique}
+    Accèder à un seul objet:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n+nb}{id}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+\pause
+    \begin{bf}Attention\end{bf}: si .get ne retourne rien ou plusieurs objets une exception est lancé.
+
+\pause
+\vspace{3mm}
+    Modifier un modèle:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{post} \PY{o}{=} \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n+nb}{id}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{post}\PY{o}{.}\PY{n}{title} \PY{o}{=} \PY{l+s}{"}\PY{l+s}{autre titre}\PY{l+s}{"}
+\PY{n}{post}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{p}{)} \PY{c}{\PYZsh{} \PYZlt{}- !!!}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Opérations classique}
+    Supprimer:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{delete}\PY{p}{(}\PY{p}{)}
+\PY{n}{post} \PY{o}{=} \PY{n}{Post}\PY{o}{.}\PY{n}{objects}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n+nb}{id}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{post}\PY{o}{.}\PY{n}{delete}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Excercice}
+    Objectif: créer un mini blog: que sur la racine ($/$) s'affiche la liste de postes et sur $/<post\_id>/$ s'affiche un poste.
+
+\pause
+\vspace{3mm}
+    Étapes recommandées:
+\begin{itemize}
+    \item Créer un modèle.
+    \item Configurer la base de données et faire un syncdb.
+    \item Rajouter quelques modèles dans le shell.
+    \item Afficher la liste des modèles sur la racinte (\begin{bf}sans\end{bf} templates dans un premier temps si c'est plus facile)
+    \item Une fois que ça marche, rajouter un template pour la racine et l'utiliser.
+    \item Utiliser un fichier $views.py$ pour les vues (les fonctions appelées par $urls.py$)
+    \item Faire pareil pour n'afficher qu'un seul poste en attrapant l'id du poste dans l'url.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+Interface admin
+\end{center}
+\end{LARGE}
+\end{frame}
+
+\begin{frame}[fragile]{Blabla}
+    \begin{itemize}
+        \item Interface généré automatiquement pour les modèles
+        \item Les modèles doivent y être enregistré
+        \item Pas mal customisable
+        \item J'entrerai pas dans les détails
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{L'activer}
+    \begin{itemize}
+        \item Dans $project/urls.py$ décommenter les lignes correspondantes.
+        \item Dans $project/settings.py$ dans la liste d'applications décommencer les lignes correspondantes.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{L'activer}
+
+$urls.py$
+\begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
+
+    \PY{c}{\PYZsh{} Uncomment the next two lines to enable the admin:}
+    \PY{k+kn}{from} \PY{n+nn}{django.contrib} \PY{k+kn}{import} \PY{n}{admin}
+    \PY{n}{admin}\PY{o}{.}\PY{n}{autodiscover}\PY{p}{(}\PY{p}{)}
+
+    \PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
+        \PY{o}{.}\PY{o}{.}\PY{o}{.}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}admin/}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{n}{admin}\PY{o}{.}\PY{n}{site}\PY{o}{.}\PY{n}{urls}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+    \PY{p}{)}
+\end{Verbatim}
+\end{footnotesize}
+
+$settings.py$
+\begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{n}{INSTALLED\PYZus{}APPS} \PY{o}{=} \PY{p}{(}
+        \PY{o}{.}\PY{o}{.}\PY{o}{.}
+        \PY{l+s}{'}\PY{l+s}{django.contrib.admin}\PY{l+s}{'}\PY{p}{,}
+    \PY{p}{)}
+\end{Verbatim}
+\end{footnotesize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Rajouter un modèle}
+    Faire un fichier $admin.py$ et y mettre:
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{models} \PY{k+kn}{import} \PY{n}{Post}
+    \PY{k+kn}{from} \PY{n+nn}{django.contrib} \PY{k+kn}{import} \PY{n}{admin}
+
+    \PY{n}{admin}\PY{o}{.}\PY{n}{site}\PY{o}{.}\PY{n}{register}\PY{p}{(}\PY{n}{Post}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Excercice}
+    \begin{itemize}
+        \item Activer l'interface admin.
+        \item Se logger et se balader un peu.
+        \item Rajouter le model Post dans l'interface admin.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+Django apps
+\end{center}
+\end{LARGE}
+\end{frame}
+
+\begin{frame}[fragile]{blabla}
+    \begin{itemize}
+        \item aide à structurer le code\pause
+        \item réutilisable $->$ les gens ont déjà résolu plein de problèmes pour nous\pause
+        \item grosse killer feature de django\pause
+        \item il est important qu'une app se concentre sur une et une seule chose, pas hésiter à en faire plein\pause
+        \item On en trouve un peut partout, surtout sur github, une bonne partie est listé sur $djangopackages.com$\pause
+        \item Aller voir ce talk http://youtu.be/A-S0tqpPga4\pause
+    \end{itemize}
+    Remarque: l'interface admin est une app.
+\end{frame}
+
+\begin{frame}[fragile]{Ma première app}
+    Faire:
 \begin{verbatim}
-Model.o
+    python manage.py startapp blog
+\end{verbatim}
+\pause
+
+    Cela va vous donner:
+\begin{verbatim}
+    blog/views.py
+    blog/models.py
+    blog/__init__.py
+    blog/tests.py
 \end{verbatim}
 \end{frame}
 
-%\begin{theorem}
-  %In a right triangle, the square of hypotenuse equals
-  %the sum of squares of two other sides.
-%\end{theorem}
+\begin{frame}[fragile]{Migrer sur l'app}
+    Objectif: bouger tout ce qu'on a fait dans l'app. Cela va impliquer:
+    \begin{itemize}
+        \item de bouger $models.py$, $admin.py$, $views.py$ et d'adapter le $urls.py$
+        \item d'avoir à enregistrer l'app dans $settings.py$
+        \item d'avoir à recréer la db (les modèles sont plus ou moins lié à une app via un namespace (modifiable))
+    \end{itemize}
+\end{frame}
 
-%*Modèles
-%*premier modèle
-%*syncdb + settings.py
-%*warning sur les modifs de db (évoquer south)
-%*liste des champs classique, pointer sur la doc de django
-%*shell
-%*créer un modèle, les 2 façons (.create, parler du .save)
-%*accèder à un/des modèle (.all, .filter, .get + chainage)
-%*modifier un modèle
-%*supprimer un/des modèles
-%*.update
+\begin{frame}[fragile]{urls.py}
+    L'$urls.py$ de l'app sera quasi le même que le premier, il faudra juste retirer ce qui est lié à l'interface admin.
+
+    \vspace{3mm}
+    L'ancien $urls.py$ devra être un peu modifié.
+\end{frame}
+
+\begin{frame}[fragile]{Approche naïve}
+    On peut faire quelque chose comme ça:
+\end{frame}
+
+%*Apps
+%*bouger tout ce qu'on a fait dedans
+%*attention à la db ! (les modèles changent) + !! settings.py installed apps
+%*comme gérer dans urls.py
+% remarque pour les templates
+%*import vs strings vs include
+
+%*Avancé
 
 %*Interface admin
 %*ça existe
 %*comment rajouter un modèle
 %*vais pas trop en parler, y a plein de trucs cool à faire mais pas le sujet
-
-%*Apps
-%*principe, pourquoi c'est cool, organisation, réutilisabilité
-%*où en trouver ? github + google + http://www.djangopackages.com
-%*mater ça http://youtu.be/A-S0tqpPga4
-%*python manage.py startapp
-%*bouger tout ce qu'on a fait dedans
-%*attention à la db ! (les modèles changent) + !! settings.py installed apps
-%*comme gérer dans urls.py
-%*import vs strings vs include
-
-%*Avancé
 
 % urls
 % utiliser des stings
@@ -628,12 +852,20 @@ Model.o
 % nomer ses urls + prefix apps
 
 % templates
+%*héritage templates
+% include
 %*filtres
 %*{% url %}
 
+% models
+%*liste des champs classique, pointer sur la doc de django
+% les set automatiquement créé
+%*.update
+% __unicode__
+
 %*get_object_or_404
+
 %*forms
-%*héritage templates
 
 %*Parler de ce dont j'ai pas parlé
 %*les middlesware
