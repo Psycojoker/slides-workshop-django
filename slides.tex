@@ -840,7 +840,7 @@ Django apps
 \end{frame}
 
 \begin{frame}[fragile]{Approche naïve}
-    On peut faire quelque chose comme ça:
+    On peut faire quelque chose comme ça (dans l'$urls.py$ du projet, pas de l'app):
 \begin{Verbatim}[commandchars=\\\{\}]
     \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
 
@@ -856,7 +856,7 @@ Django apps
 \end{frame}
 
 \begin{frame}[fragile]{Approche naïve}
-    Ou comme ça:
+    Ou comme ça (dans l'$urls.py$ du projet, pas de l'app):
 
 \begin{Verbatim}[commandchars=\\\{\}]
     \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
@@ -870,7 +870,7 @@ Django apps
 \end{frame}
 
 \begin{frame}[fragile]{Approche naïve}
-    Ou encore comme ça (mieux):
+    Ou encore comme ça (mieux) (dans l'$urls.py$ du projet, pas de l'app):
 \begin{Verbatim}[commandchars=\\\{\}]
     \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
 
@@ -882,16 +882,16 @@ Django apps
 \end{Verbatim}
 \end{frame}
 
-\begin{frame}[fragile]{Approche naïve}
+\begin{frame}[fragile]{Approche plus mieux}
     Mais le mieux c'est de prendre le dernier fichier, de virer ce qui est lié à l'admin, de le mettre dans $blog/urls.py$ et de faire:
 
 \begin{Verbatim}[commandchars=\\\{\}]
     \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
 
-    \PY{k+kn}{import} \PY{n}{blog}
+    \PY{k+kn}{from} \PY{n}{blog} \PY{k+kn}{import} \PY{n}{urls}
 
     \PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
-        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{n}{blog}\PY{o}{.}\PY{n}{urls}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{n}{urls}\PY{p}{)}\PY{p}{)}\PY{p}{,}
         \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}admin/}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{n}{admin}\PY{o}{.}\PY{n}{site}\PY{o}{.}\PY{n}{urls}\PY{p}{)}\PY{p}{)}\PY{p}{,}
     \PY{p}{)}
 \end{Verbatim}
@@ -901,9 +901,26 @@ Django apps
 
 \pause
 \begin{Verbatim}[commandchars=\\\{\}]
-    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{blog.urls}\PY{l+s}{'}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{c}{\PYZsh{} marche aussi}
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{blog.urls}\PY{l+s}{'}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{c}{\PYZsh{} marche aussi}
 \end{Verbatim}
 
+\end{frame}
+
+\begin{frame}[fragile]{Approche plus mieux}
+    Pour référence voici à quoi peut ressembler le fichier $urls.py$ de l'application (à mettre dans $application/urls.py$ eg: $blog/urls.py$):
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
+
+    \PY{k+kn}{from} \PY{n+nn}{views} \PY{k+kn}{import} \PY{n}{hello}\PY{p}{,} \PY{n}{with\PYZus{}arg}
+
+    \PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{hello}\PY{p}{)}\PY{p}{,}
+        \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(.*)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{with\PYZus{}arg}\PY{p}{)}\PY{p}{,}
+    \PY{p}{)}
+\end{Verbatim}
+
+Remarque: seul le "blog." a disparu de l'import et les urls non liés à l'application ont disparues.
 \end{frame}
 
 \begin{frame}[fragile]{Remarques}
@@ -962,6 +979,8 @@ Avancé
 \begin{Verbatim}[commandchars=\\\{\}]
     \PY{k}{def} \PY{n+nf}{vue}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
         \PY{n}{request}\PY{o}{.}\PY{n}{POST}\PY{p}{[}\PY{l+s}{"}\PY{l+s}{clef}\PY{l+s}{"}\PY{p}{]}
+
+    \PY{k}{def} \PY{n+nf}{autre\PYZus{}vue}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
         \PY{n}{request}\PY{o}{.}\PY{n}{GET}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s}{"}\PY{l+s}{clef}\PY{l+s}{"}\PY{p}{)}
 \end{Verbatim}
 
@@ -970,14 +989,18 @@ Il est préférable d'utiliser .get pour éviter une exception
 
 \begin{frame}[fragile]{Nomer ses urls}
 Cela permet de faire des reverses pour avoir des urls relatives.
+\begin{small}
 \begin{Verbatim}[commandchars=\\\{\}]
-    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(?P\PYZlt{}post\PYZus{}id\PYZgt{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{d+)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{l+s}{'}\PY{l+s}{show\PYZus{}post}\PY{l+s}{'}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{post}\PY{l+s}{"}\PY{p}{)}
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(?P\PYZlt{}post\PYZus{}id\PYZgt{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{d+)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{l+s}{'}\PY{l+s}{show\PYZus{}post}\PY{l+s}{'}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{l+s}{"}\PY{l+s}{nom_url}\PY{l+s}{"}\PY{p}{)}
 \end{Verbatim}
+\end{small}
 
 Dans les templates:
+\begin{footnotesize}
 \begin{verbatim}
-    {% url post post.id %}
+    <a href="{% url nom_url une_variable.id %}">Lien vers un post</a>
 \end{verbatim}
+\end{footnotesize}
 
 Dans une vue:
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -1032,7 +1055,7 @@ On y retrouve la plupart des opérations classiques sur les strings (cut, strip,
     {% include "autre-template.html" %}
     \end{verbatim}
 
-Remarque: préféré l'héritage pour les choses tels que les headers et les footers.
+Remarque: préférez l'héritage pour les choses tels que les headers et les footers.
 \end{frame}
 
 \begin{frame}[fragile]{L'héritage de templates}
