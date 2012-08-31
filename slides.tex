@@ -98,7 +98,7 @@
 
 %\usetheme{default}
 \begin{document}
-\title{Workshop django}
+\title{Workshop Django}
 \author{Laurent Peuch}
 
 \maketitle{}
@@ -115,11 +115,11 @@
 
 \begin{frame}{Objectif}
 \begin{itemize}
-    \item vous apprendre la base de django et la structure classique d'un projet django
+    \item vous apprendre la base de Django et la structure classique d'un projet Django
     \item vous donner une vision d'ensemble de ce qui est possible/disponible
     \item pour pouvoir continuer à apprendre la suite par vous même
     \item que ces slides puissent être un support pour vous
-    \item plus ou moins vous donner ce qu'il faut pour bosser sur la partie django de p402
+    \item plus ou moins vous donner ce qu'il faut pour bosser sur la partie Django de p402
 \end{itemize}
 \end{frame}
 
@@ -141,12 +141,12 @@
 
 \begin{frame}{Introduction}
     \vspace{3mm}
-    C'est quoi django ?
+    C'est quoi Django ?
     \begin{itemize}
         \item framework web en python\pause
         \item full stacked (vs microframework comme flask, bottle et les 15 milles autres)\pause
         \item vous "impose" un orm et un système de templates (changeable tous les 2 mais pas pensé pour)\pause
-        \item mais en échange vous avez les django app\pause
+        \item mais en échange vous avez les Django app\pause
         \item facile à utiliser (quasi tout), gros gain de productivité mais beaucoup à apprendre, vous allez souvent utiliser la documentation
     \end{itemize}
 \end{frame}
@@ -186,7 +186,7 @@ Installation
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Mon premier projet django}
+\begin{frame}[fragile]{Mon premier projet Django}
     Faire dans le virtualenv:
             \begin{verbatim}
     django-admin.py startproject <nom du projet>
@@ -213,7 +213,7 @@ Installation
 \end{frame}
 
 \begin{frame}[fragile]{Django $\leq$ 1.3}
-    Remarque: vous allez aussi rencontrer des projets ayant la forme suivante (django $\leq$ 1.3)
+    Remarque: vous allez aussi rencontrer des projets ayant la forme suivante (Django $\leq$ 1.3)
     \begin{verbatim}
     urls.py
     settings.py
@@ -318,7 +318,7 @@ MTV
         \item urls.py
         \item interface admin
     \end{itemize}
-    Objectif: créer un mini blog (que sur la racine ($/$) s'affiche la liste de postes et sur $/<post\_id>/$ s'affiche un poste).
+    Objectif: créer un mini blog (que sur la racine ($/$) s'affiche la liste de posts et sur $/<post\_id>/$ s'affiche un post).
 \end{frame}
 
 \begin{frame}[fragile]{}
@@ -378,7 +378,7 @@ On utilisera \bf{jamais}  ça.
 
     \vspace{3mm}
 
-    C'est parce que django demande qu'on lui dise où sont les templates (sauf pour les apps, cf plus tard).
+    C'est parce que Django demande qu'on lui dise où sont les templates (sauf pour les apps, cf plus tard).
 
     \vspace{3mm}
 
@@ -481,7 +481,7 @@ ORM
 \end{frame}
 
 \begin{frame}[fragile]{Modèles}
-    On veut pouvoir stocker des données, ici on utilise une base de données SQL via l'ORM de django.
+    On veut pouvoir stocker des données, ici on utilise une base de données SQL via l'ORM de Django.
 
     \vspace{3mm}
     (ORM == object-relationnal mapping, une abstraction de la base de données)
@@ -506,19 +506,19 @@ Exemple:
 Remarque: ici c'est pour apprendre, en vrai ce fichier sera dans une app.
 
 \vspace{3mm}
-Autre remarque: si ce n'est pas spécifié django créera une clef primaire pour vous qui s'appelera $id$ (et elle a un alias $pk$).
+Autre remarque: si ce n'est pas spécifié Django créera une clef primaire pour vous qui s'appelera $id$ (et elle a un alias $pk$).
 
 \end{frame}
 
 \begin{frame}[fragile]{Créer la base de données}
-    Maintenant qu'on a décrit un modèle, on doit demander à django de le créer dans la base de donner. Pour cela on doit faire la commande:
+    Maintenant qu'on a décrit un modèle, on doit demander à Django de le créer dans la base de données. Pour cela on doit faire la commande:
 
 \begin{verbatim}
     python manage.py syncdb
 \end{verbatim}
 
 \pause
-    Cela va produire une erreur car on a pas dit à django quelle base de donnée utiliser.
+    Cela va produire une erreur, car on a pas dit à Django quelle base de données utiliser.
     \vspace{3mm}
 
     Cela se fait dans $settings.py$.
@@ -566,7 +566,7 @@ Django va vous demander si vous voulez créer un $super user$ (un admin), comme 
 \end{verbatim}
 
 \vspace{3mm}
-En fait ici il y a un piège, django va créer plein de tables dans la base de données, mais pas celle que l'on vient de déclarer. C'est parce que django ne créer les tables que des apps qui sont spécifiés dans $settings.py$ et la notre n'y est pas.
+En fait ici il y a un piège, Django va créer plein de tables dans la base de données, mais pas celle que l'on vient de déclarer. C'est parce que Django ne crée les tables que des apps qui sont spécifiées dans $settings.py$ et la nôtre n'y est pas.
 \end{frame}
 
 \begin{frame}[fragile]{Configurer la base de donnée}
@@ -599,7 +599,7 @@ Et refaire un:
 
     \pause
     \vspace{3mm}
-    Le SQL est assez rigide, pour faire cela il faut passer par des migrations (avec $django$ $south$ par exemple). Pas détaillers ici.
+    Le SQL est assez rigide, pour faire cela il faut passer par des migrations (avec $django$ $south$ par exemple). Pas détaillé ici.
 
     \pause
     \vspace{3mm}
@@ -607,10 +607,10 @@ Et refaire un:
 \end{frame}
 
 \begin{frame}[fragile]{Comment jouer avec des modèles}
-    Remarque: je vous conseil de faire ça dans le shell django pour vous entrainer/amuser.
+    Remarque: je vous conseille de faire ça dans le shell Django pour vous entraîner/amuser.
 
     \pause\vspace{3mm}
-    Remarque \#2: je vous conseil vivement d'installer $ipython$, cela rend les choses bien plus facile (dans le virtualenv faire: "pip install ipython").
+    Remarque \#2: je vous conseille vivement d'installer $ipython$, cela rend les choses bien plus faciles (dans le virtualenv faire: "pip install ipython").
 
     \pause\vspace{3mm}
     Pour lancer le shell:
@@ -671,7 +671,7 @@ Remarque: le $.save()$ est \begin{bf}obligatoire\end{bf} pour sauver l'objet dan
 \end{Verbatim}
 
 \pause
-    \begin{bf}Attention\end{bf}: si .get ne retourne rien ou plusieurs objets une exception est lancé.
+    \begin{bf}Attention\end{bf}: si .get ne retourne rien ou plusieurs objets une exception est lancée.
 
 \pause
 \vspace{3mm}
@@ -753,7 +753,7 @@ Interface admin
 
 \begin{frame}[fragile]{Blabla}
     \begin{itemize}
-        \item Interface généré automatiquement pour les modèles
+        \item Interface générée automatiquement pour les modèles
         \item Les modèles doivent y être enregistré
         \item Pas mal customisable
         \item J'entrerai pas dans les détails
@@ -827,9 +827,9 @@ Django apps
     \begin{itemize}
         \item aide à structurer le code\pause
         \item réutilisable $->$ les gens ont déjà résolu plein de problèmes pour nous\pause
-        \item grosse killer feature de django\pause
+        \item grosse killer feature de Django\pause
         \item il est important qu'une app se concentre sur une et une seule chose, pas hésiter à en faire plein\pause
-        \item On en trouve un peut partout, surtout sur github, une bonne partie est listé sur $djangopackages.com$\pause
+        \item On en trouve un peut partout, surtout sur github, une bonne partie est listée sur $djangopackages.com$\pause
         \item Aller voir ce talk http://youtu.be/A-S0tqpPga4\pause
     \end{itemize}
     Remarque: l'interface admin est une app.
@@ -856,7 +856,7 @@ Django apps
     \begin{itemize}
         \item de bouger $models.py$, $admin.py$, $views.py$ et d'adapter le $urls.py$
         \item d'avoir à enregistrer l'app dans $settings.py$
-        \item d'avoir à recréer la db (les modèles sont plus ou moins lié à une app via un namespace (modifiable))
+        \item d'avoir à recréer la db (les modèles sont plus ou moins liés à une app via un namespace (modifiable))
     \end{itemize}
 \end{frame}
 
@@ -980,7 +980,7 @@ Remarque: seul le "blog." a disparu de l'import et les urls non liés à l'appli
 \end{tikzpicture}
 
 \begin{frame}[fragile]{Exercice}
-    Migrer dans une django app.
+    Migrer dans une Django app.
 \end{frame}
 
 \begin{frame}[fragile]{}
@@ -1002,7 +1002,7 @@ Avancé
 \end{frame}
 
 \begin{frame}[fragile]{POST et GET dans les requests}
-    Les arguments POST et GET sont mit dans des dictionnaires sur l'objet request:
+    Les arguments POST et GET sont mis dans des dictionnaires sur l'objet request:
 
 \begin{Verbatim}[commandchars=\\\{\}]
     \PY{k}{def} \PY{n+nf}{vue}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
@@ -1043,7 +1043,7 @@ Dans une vue:
 \end{frame}
 
 \begin{frame}[fragile]{Avec un préfixe}
-Pour éviter les conflits de nom entre apps:
+Pour éviter les conflits de noms entre apps:
 \begin{footnotesize}
 \begin{Verbatim}[commandchars=\\\{\}]
     \PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}blog/}\PY{l+s}{'}\PY{p}{,} \PY{n}{include}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{blog.urls}\PY{l+s}{'}\PY{p}{,} \PY{n}{namespace}\PY{o}{=}\PY{l+s}{'}\PY{l+s}{blog}\PY{l+s}{'}\PY{p}{,} \PY{n}{app\PYZus{}name}\PY{o}{=}\PY{l+s}{'}\PY{l+s}{blog}\PY{l+s}{'}\PY{p}{)}\PY{p}{)}\PY{p}{,}
@@ -1083,7 +1083,7 @@ On y retrouve la plupart des opérations classiques sur les strings (cut, strip,
     {% include "autre-template.html" %}
     \end{verbatim}
 
-Remarque: préférez l'héritage pour les choses tels que les headers et les footers.
+Remarque: préférez l'héritage pour les choses telles que les headers et les footers.
 \end{frame}
 
 \begin{frame}[fragile]{L'héritage de templates}
@@ -1124,7 +1124,7 @@ Remarque: préférez l'héritage pour les choses tels que les headers et les foo
 \end{footnotesize}
 \end{frame}
 
-\begin{frame}[fragile]{Champs des modèles classique}
+\begin{frame}[fragile]{Champs des modèles classiques}
     Il y a normalement tout ce qu'on peut trouver dans une bdd SQL classique et d'autres
     \begin{itemize}
         \item CharField
@@ -1137,11 +1137,11 @@ Remarque: préférez l'héritage pour les choses tels que les headers et les foo
         \item ManyToManyField(..., through="...")
         \item OneToOne
     \end{itemize}
-Et les options classique: null=True, blank=True, max\_lenght=255
+Et les options classiques: null=True, blank=True, max\_lenght=255
 \end{frame}
 
 \begin{frame}[fragile]{\_\_unicode\_\_ pour un modèle}
-    C'est intéressant de surcharger cette méthode car c'est elle qui sera appelé par défaut dans un template (et ça rend la lecture dans un shell plus facile):
+    C'est intéressant de surcharger cette méthode, car c'est elle qui sera appelée par défaut dans un template (et ça rend la lecture dans un shell plus facile):
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{Class} \PY{n}{Post}\PY{p}{(}\PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{)}\PY{p}{:}
@@ -1151,12 +1151,12 @@ Et les options classique: null=True, blank=True, max\_lenght=255
 \end{Verbatim}
 
 \begin{verbatim}
-{{ post }} <- affiche le titre du poste
+{{ post }} <- affiche le titre du post
 \end{verbatim}
 \end{frame}
 
 \begin{frame}[fragile]{Les reverses des modèles}
-    Si vous faites des relations entre modèles avec des foreigns key, django créer automatiquement des méthodes pour vous aider.
+    Si vous faites des relations entre modèles avec des foreigns key, Django crée automatiquement des méthodes pour vous aider.
 
 \vspace{3mm}
 \pause
@@ -1201,7 +1201,7 @@ Remplace:
     \begin{itemize}
         \item afficher le résultat d'un select
         \item afficher un objet
-        \item créer u n nouvel objet
+        \item créer un nouvel objet
         \item updater un objet
         \item supprimer un objet
         \item afficher un template et afficher par rapport à un type de date
@@ -1295,7 +1295,7 @@ Jquery
         \item still javascript ...\pause
         \item surtout intéressant pour rendre une page dynamique\pause
         \item et faire de l'AJAX (en gros du POST/GET http sans recharger la page)\pause
-        \item firebug (ou le brole buildin de chrome) sera votre compagnon d'infortune\pause
+        \item firebug (ou le brol buildin de chrome) sera votre compagnon d'infortune\pause
         \item utilisé par p402\pause
         \item surtout vous montrer le principe\pause
         \item pas oublier que c'est executé par le naviguateur de l'utilisateur qui peut le modifier (ou en empêcher son execution)
@@ -1329,11 +1329,11 @@ Jquery
 \end{frame}
 
 \begin{frame}[fragile]{Principe}
-    Les uses cases de base sont assez simple:
+    Les uses cases de base sont assez simples:
     \begin{itemize}
-        \item selectionner un élément du DOM (l'arbre html) et le modifier
+        \item sélectionner un élément du DOM (l'arbre html) et le modifier
         \item selectionner un élément du DOM et lui attacher un événement
-        \item faire une requète (POST/GET) et potentielement utiliser le coder de retour
+        \item faire une requète (POST/GET) et potentiellement utiliser le coder de retour
     \end{itemize}
 \end{frame}
 
@@ -1390,7 +1390,7 @@ Jquery
 \end{frame}
 
 \begin{frame}[fragile]{AJAX: GET}
-    GET (remarque, l'ajax n'est permit que sur le domaine où s'excecute le code):
+    GET (remarque, l'ajax n'est permis que sur le domaine où s'excecute le code):
 \begin{Verbatim}[commandchars=\\\{\}]
     \PY{n+nx}{\PYZdl{}}\PY{p}{.}\PY{n+nx}{get}\PY{p}{(}\PY{l+s+s2}{"/url/"}\PY{p}{,} \PY{k+kd}{function}\PY{p}{(}\PY{n+nx}{data}\PY{p}{)} \PY{p}{\PYZob{}}
         \PY{n+nx}{\PYZdl{}}\PY{p}{(}\PY{l+s+s2}{"\PYZsh{}pouet"}\PY{p}{)}\PY{p}{.}\PY{n+nx}{html}\PY{p}{(}\PY{n+nx}{data}\PY{p}{)}\PY{p}{;}
@@ -1433,7 +1433,7 @@ Jquery
 \end{frame}
 
 \begin{frame}[fragile]{Remarques}
-    Vous aurez pas besoin d'énormement plus, avec ça vous savez déjà fait énormement.
+    Vous n'aurez pas besoin d'énormement plus, avec ça vous savez déjà faire énormement.
 
     \vspace{3mm}
     Je vous recommande vraiment d'apprendre à vous servir de firebug, de sa console et de la fenêtre qui permet de mettre des breakpoints.
@@ -1456,18 +1456,5 @@ Faim. Questions/Remarques ?
 \end{center}
 \end{LARGE}
 \end{frame}
-
-%*jquery
-%*$.document.ready vs $() vs autre brole
-%*selectors
-%*.hide
-%*.show
-%*events (onclick)
-%*.html
-%*.append
-%*.data
-%*AJAX $.get $.post
-
-%Repomper ça http://sametmax.com/schema-de-fonctionnement-general-de-django/
 
 \end{document}
