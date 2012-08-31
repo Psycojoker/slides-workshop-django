@@ -173,7 +173,7 @@ Installation
         \item Installation de pip (sudo apt-get install python-pip)\pause
         \item sudo pip install virtualenv (ou alors avec le package python-virtualenv)\pause
         \item aller dans un nouveau répertoire (mkdir blog \&\& cd blog)\pause
-        \item virtualenv --no-site-packages --distribute ve\pause
+        \item virtualenv - -no-site-packages - -distribute ve\pause
         \item source ve/bin/activate \# pour rentrer dans le venv\pause
         \item pip install django\pause
         \item rehash \# pour zsh
@@ -313,35 +313,20 @@ MTV
 
 \begin{frame}[fragile]{Plan pour la partie mtv}
     \begin{itemize}
-        \item urls.py
         \item templates
         \item models
+        \item urls.py
         \item interface admin
     \end{itemize}
+    Objectif: créer un mini blog (que sur la racine ($/$) s'affiche la liste de postes et sur $/<post\_id>/$ s'affiche un poste).
 \end{frame}
 
-\begin{frame}[fragile]{urls.py}
-    Comment choper un argument:
-
-\begin{footnotesize}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
-\PY{k+kn}{from} \PY{n+nn}{django.http} \PY{k+kn}{import} \PY{n}{HttpResponse}
-
-\PY{o}{.}\PY{o}{.}\PY{o}{.}
-
-\PY{k}{def} \PY{n+nf}{with\PYZus{}arg}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{n}{argument}\PY{p}{)}\PY{p}{:}
-    \PY{k}{return} \PY{n}{HttpResponse}\PY{p}{(}\PY{l+s}{"}\PY{l+s}{Hello }\PY{l+s+si}{\PYZpc{}s}\PY{l+s}{"} \PY{o}{\PYZpc{}} \PY{n}{argument}\PY{p}{)}
-
-\PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
-    \PY{o}{.}\PY{o}{.}\PY{o}{.}
-    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(.*)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{with\PYZus{}arg}\PY{p}{)}\PY{p}{,}
-\PY{p}{)}
-\end{Verbatim}
-\end{footnotesize}
-
-Pour tester aller sur $http://0.0.0.0:8000/world/$
-
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+Templates
+\end{center}
+\end{LARGE}
 \end{frame}
 
 \begin{frame}[fragile]{Templates}
@@ -362,10 +347,10 @@ Pour tester aller sur $http://0.0.0.0:8000/world/$
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k+kn}{from} \PY{n+nn}{django.template} \PY{k+kn}{import} \PY{n}{Context}\PY{p}{,} \PY{n}{loader}
 
-\PY{k}{def} \PY{n+nf}{with\PYZus{}arg}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{n}{argument}\PY{p}{)}\PY{p}{:}
+\PY{k}{def} \PY{n+nf}{hello}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
     \PY{n}{t} \PY{o}{=} \PY{n}{loader}\PY{o}{.}\PY{n}{get\PYZus{}template}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{hello.html}\PY{l+s}{'}\PY{p}{)}
     \PY{n}{c} \PY{o}{=} \PY{n}{Context}\PY{p}{(}\PY{p}{\PYZob{}}
-        \PY{l+s}{'}\PY{l+s}{name}\PY{l+s}{'}\PY{p}{:} \PY{n}{argument}\PY{p}{,}
+        \PY{l+s}{'}\PY{l+s}{name}\PY{l+s}{'}\PY{p}{:} \PY{l+s}{'argument'}\PY{p}{,}
     \PY{p}{\PYZcb{}}\PY{p}{)}
     \PY{k}{return} \PY{n}{HttpResponse}\PY{p}{(}\PY{n}{t}\PY{o}{.}\PY{n}{render}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
@@ -381,15 +366,15 @@ On utilisera \bf{jamais}  ça.
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k+kn}{from} \PY{n+nn}{django.shortcuts} \PY{k+kn}{import} \PY{n}{render}
 
-\PY{k}{def} \PY{n+nf}{with\PYZus{}arg}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{n}{argument}\PY{p}{)}\PY{p}{:}
-    \PY{k}{return} \PY{n}{render}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{l+s}{"}\PY{l+s}{hello.html}\PY{l+s}{"}\PY{p}{,} \PY{p}{\PYZob{}}\PY{l+s}{"}\PY{l+s}{name}\PY{l+s}{"}\PY{p}{:} \PY{n}{argument}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{hello}\PY{p}{(}\PY{n}{request}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{render}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{l+s}{"}\PY{l+s}{hello.html}\PY{l+s}{"}\PY{p}{,} \PY{p}{\PYZob{}}\PY{l+s}{"}\PY{l+s}{name}\PY{l+s}{"}\PY{p}{:} \PY{l+s}{"}\PY{l+s}{World}\PY{l+s}{"}\PY{p}{\PYZcb{}}\PY{p}{)}
 \end{Verbatim}
 \end{footnotesize}
 
 \end{frame}
 
 \begin{frame}[fragile]{Utiliser un template}
-    Si vous essayez d'aller sur $http://0.0.0.0:8000/world/$ vous allez avoir une erreur $TemplateDoesNotExist at /world/$.
+    Si vous essayez d'aller sur $http://0.0.0.0:8000/$ vous allez avoir une erreur $TemplateDoesNotExist at /$.
 
     \vspace{3mm}
 
@@ -426,12 +411,12 @@ TEMPLATE_DIRS = (
 Remarque: ce n'est pas portable, en vrai on utilise des paths relatifs, ici par simplicité je ne l'ai pas montré.\pause
 
 \vspace{3mm}
-\bf La virgule à la fin du string est OBLIGATOIRE sinon python ne considère pas que c'est un tuple.
+\bf La virgule à la fin du string est OBLIGATOIRE sinon python ne considère pas que c'est un tuple (une liste à taille fixe).
 
 \end{frame}
 
 \begin{frame}[fragile]{Utiliser un template}
-    Retourner sur $http://0.0.0.0:8000/world$, cela devrait fonctionner désormait.
+    Retourner sur $http://0.0.0.0:8000/$, cela devrait fonctionner désormait.
 
     Remarque: vérifier que le serveur de dev se lance bien et qu'il ne montre pas d'erreurs.
 \end{frame}
@@ -455,12 +440,15 @@ objet.attribut
 objet.methode()
 objet[clef]
 \end{verbatim}
-\pause
-S'écrivent tous:
+\vspace{10mm}
+\end{frame}
+
+\begin{frame}[fragile]{Syntaxe des templates}
+Les appels aux attributs d'un objet pythons sont uniformisés, cela veut dire en gros que ... s'écrivent tous:
 \begin{verbatim}
-{{ objet.attribut }}
-{{ objet.methode }}
-{{ objet.clef }}
+objet.attribut  -> {{ objet.attribut }}
+objet.methode() -> {{ objet.methode }}
+objet[clef]     -> {{ objet.clef }}
 \end{verbatim}
 \pause
 Remarque: \bf on ne peut pas passer d'arguments à une méthode dans un template, il faut passer par des templatetags.
@@ -482,6 +470,14 @@ Remarque: \bf on ne peut pas passer d'arguments à une méthode dans un template
 {% endif %}
 \end{verbatim}
 Les conditions sont très similaire à celles de python.
+\end{frame}
+
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+ORM
+\end{center}
+\end{LARGE}
 \end{frame}
 
 \begin{frame}[fragile]{Modèles}
@@ -698,21 +694,53 @@ Remarque: le $.save()$ est \begin{bf}obligatoire\end{bf} pour sauver l'objet dan
 \end{Verbatim}
 \end{frame}
 
-\begin{frame}[fragile]{Exercice}
-    Objectif: créer un mini blog: que sur la racine ($/$) s'affiche la liste de postes et sur $/<post\_id>/$ s'affiche un poste.
+\begin{frame}[fragile]{}
+\begin{LARGE}
+\begin{center}
+urls.py
+\end{center}
+\end{LARGE}
+\end{frame}
 
+\begin{frame}[fragile]{urls.py}
+    Comment choper un argument:
+
+\begin{footnotesize}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{django.conf.urls} \PY{k+kn}{import} \PY{n}{patterns}\PY{p}{,} \PY{n}{include}\PY{p}{,} \PY{n}{url}
+\PY{k+kn}{from} \PY{n+nn}{django.http} \PY{k+kn}{import} \PY{n}{HttpResponse}
+
+\PY{o}{.}\PY{o}{.}\PY{o}{.}
+
+\PY{k}{def} \PY{n+nf}{with\PYZus{}arg}\PY{p}{(}\PY{n}{request}\PY{p}{,} \PY{n}{argument}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{HttpResponse}\PY{p}{(}\PY{l+s}{"}\PY{l+s}{Hello }\PY{l+s+si}{\PYZpc{}s}\PY{l+s}{"} \PY{o}{\PYZpc{}} \PY{n}{argument}\PY{p}{)}
+
+\PY{n}{urlpatterns} \PY{o}{=} \PY{n}{patterns}\PY{p}{(}\PY{l+s}{'}\PY{l+s}{'}\PY{p}{,}
+    \PY{o}{.}\PY{o}{.}\PY{o}{.}
+    \PY{n}{url}\PY{p}{(}\PY{l+s}{r'}\PY{l+s}{\PYZca{}(.*)/\PYZdl{}}\PY{l+s}{'}\PY{p}{,} \PY{n}{with\PYZus{}arg}\PY{p}{)}\PY{p}{,}
+\PY{p}{)}
+\end{Verbatim}
+\end{footnotesize}
+
+Pour tester aller sur $http://0.0.0.0:8000/world/$
+\end{frame}
+
+\begin{frame}[fragile]{Syntaxe des templates}
+    Une liste des templatetags de base:\pause
+\begin{verbatim}
+{% for element in list %}
+    ...
+{% endfor %}
+\end{verbatim}
 \pause
-\vspace{3mm}
-    Étapes recommandées:
-\begin{enumerate}
-    \item Créer un modèle.
-    \item Configurer la base de données et faire un syncdb.
-    \item Rajouter quelques modèles dans le shell.
-    \item Afficher la liste des modèles sur la racinte (\begin{bf}sans\end{bf} templates dans un premier temps si c'est plus facile)
-    \item Une fois que ça marche, rajouter un template pour la racine et l'utiliser.
-    \item Utiliser un fichier $views.py$ pour les vues (les fonctions appelées par $urls.py$)
-    \item Faire pareil pour n'afficher qu'un seul poste en attrapant l'id du poste dans l'url. (Utiliser la regex $([0-9]+)$)
-\end{enumerate}
+\begin{verbatim}
+{% if condition %}
+    ...
+{% elif autre_condition %}
+    ...
+{% endif %}
+\end{verbatim}
+Les conditions sont très similaire à celles de python.
 \end{frame}
 
 \begin{frame}[fragile]{}
